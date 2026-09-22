@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manajemen Kost Oma LAPE</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 min-h-screen pb-12">
@@ -79,10 +78,130 @@
       </button>
     </div>
 
-    <!-- SECTION 1: GRID 10 KAMAR -->
+    <!-- SECTION 1: GRID 10 KAMAR (STATIC LAYOUT - PASTI MUNCUL) -->
     <section id="sectionKamar">
       <div id="gridKamar" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <!-- RENDER LANGSUNG VIA HTML SEBAGAI FALLBACK -->
+        
+        <!-- Kamar 01 -->
+        <div onclick="openModal(1)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 01</h4>
+              <span id="badgeStatus1" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga1" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar1" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 02 -->
+        <div onclick="openModal(2)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 02</h4>
+              <span id="badgeStatus2" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga2" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar2" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 03 -->
+        <div onclick="openModal(3)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 03</h4>
+              <span id="badgeStatus3" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga3" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar3" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 04 -->
+        <div onclick="openModal(4)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 04</h4>
+              <span id="badgeStatus4" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga4" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar4" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 05 -->
+        <div onclick="openModal(5)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 05</h4>
+              <span id="badgeStatus5" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga5" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar5" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 06 -->
+        <div onclick="openModal(6)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 06</h4>
+              <span id="badgeStatus6" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga6" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar6" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 07 -->
+        <div onclick="openModal(7)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 07</h4>
+              <span id="badgeStatus7" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga7" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar7" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 08 -->
+        <div onclick="openModal(8)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 08</h4>
+              <span id="badgeStatus8" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga8" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar8" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 09 -->
+        <div onclick="openModal(9)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 09</h4>
+              <span id="badgeStatus9" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga9" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar9" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
+        <!-- Kamar 10 -->
+        <div onclick="openModal(10)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <h4 class="font-bold text-slate-800">Kamar 10</h4>
+              <span id="badgeStatus10" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+            </div>
+            <p id="harga10" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+            <div id="detailKamar10" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -219,9 +338,8 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT APP LOGIC -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // Inisialisasi Data 10 Kamar Default
     function generate10Kamar() {
       let list = [];
       for (let i = 1; i <= 10; i++) {
@@ -241,53 +359,41 @@
       return list;
     }
 
-    // PAKSA RESET JIKA DATA DI BROWSER KURANG DARI 10 ATAU KOSONG
-    let kamarData;
+    let kamarData = generate10Kamar();
     try {
-      let parsed = JSON.parse(localStorage.getItem('kost_kamar'));
-      if (Array.isArray(parsed) && parsed.length === 10) {
-        kamarData = parsed;
-      } else {
-        kamarData = generate10Kamar();
-        localStorage.setItem('kost_kamar', JSON.stringify(kamarData));
-      }
-    } catch(e) {
-      kamarData = generate10Kamar();
-      localStorage.setItem('kost_kamar', JSON.stringify(kamarData));
-    }
+      let saved = JSON.parse(localStorage.getItem('kost_kamar'));
+      if (Array.isArray(saved) && saved.length === 10) kamarData = saved;
+    } catch(e) {}
 
     let keuanganData = JSON.parse(localStorage.getItem('kost_keuangan')) || [];
     let apiUrl = localStorage.getItem('kost_api_url') || '';
 
-    function saveLocal() {
-      localStorage.setItem('kost_kamar', JSON.stringify(kamarData));
-      localStorage.setItem('kost_keuangan', JSON.stringify(keuanganData));
-      updateStats();
-    }
-
-    function renderKamar() {
-      const container = document.getElementById('gridKamar');
-      if (!container) return;
-      container.innerHTML = '';
+    function updateUI() {
       const today = new Date().toISOString().split('T')[0];
 
-      kamarData.forEach(kamar => {
-        let statusBadge = '';
-        let borderColor = 'border-slate-200 bg-white';
-        let tempoBadge = '';
+      kamarData.forEach((kamar, i) => {
+        const num = i + 1;
+        const bStatus = document.getElementById(`badgeStatus${num}`);
+        const pHarga = document.getElementById(`harga${num}`);
+        const dKamar = document.getElementById(`detailKamar${num}`);
+
+        if (!bStatus) return;
+
+        pHarga.innerText = `Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln`;
 
         if (kamar.status === 'Terisi') {
+          bStatus.className = 'bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold';
+          bStatus.innerText = 'Terisi';
+
+          let tempoBadge = '';
           if (kamar.jatuhTempo) {
             const diffDays = Math.ceil((new Date(kamar.jatuhTempo) - new Date(today)) / (1000 * 60 * 60 * 24));
-
             if (kamar.statusBayar === 'Lunas') {
               tempoBadge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Lunas</span>`;
             } else if (diffDays < 0) {
               tempoBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Nunggak ${Math.abs(diffDays)} Hr</span>`;
-              borderColor = 'border-rose-300 bg-rose-50/30';
             } else if (diffDays <= 3) {
               tempoBadge = `<span class="bg-amber-100 text-amber-700 text-[10px] px-2 py-0.5 rounded-full font-bold">H-${diffDays} Tempo</span>`;
-              borderColor = 'border-amber-300 bg-amber-50/30';
             } else {
               tempoBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Belum Bayar</span>`;
             }
@@ -297,37 +403,34 @@
               `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Belum Bayar</span>`;
           }
 
-          statusBadge = `<span class="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">Terisi</span>`;
-        } else if (kamar.status === 'Kosong') {
-          statusBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>`;
-        } else {
-          statusBadge = `<span class="bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Perbaikan</span>`;
-        }
-
-        const card = document.createElement('div');
-        card.className = `p-4 rounded-xl border ${borderColor} shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]`;
-        card.onclick = () => openModal(kamar.id);
-
-        card.innerHTML = `
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">${kamar.nomor}</h4>
-              <div class="flex gap-1 items-center">${statusBadge}</div>
+          dKamar.className = 'pt-2 border-t border-slate-100 space-y-1 text-xs';
+          dKamar.innerHTML = `
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-slate-700">👤 ${kamar.penghuni || '-'}</span>
+              ${tempoBadge}
             </div>
-            <p class="text-xs text-slate-500 mb-2">Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln</p>
-
-            ${kamar.status === 'Terisi' ? `
-              <div class="pt-2 border-t border-slate-100 space-y-1">
-                <div class="flex justify-between items-center">
-                  <span class="text-xs font-semibold text-slate-700">👤 ${kamar.penghuni \vert{}\vert{} '-'}</span>${tempoBadge}
-                </div>
-                <p class="text-[11px] text-slate-500">📅 Tempo: ${kamar.jatuhTempo || '-'}</p>
-              </div>
-            ` : '<p class="text-xs text-slate-400 italic pt-2 border-t border-slate-100">Siap huni</p>'}
-          </div>
-        `;
-        container.appendChild(card);
+            <p class="text-[11px] text-slate-500">📅 Tempo: ${kamar.jatuhTempo || '-'}</p>
+          `;
+        } else if (kamar.status === 'Kosong') {
+          bStatus.className = 'bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold';
+          bStatus.innerText = 'Kosong';
+          dKamar.className = 'pt-2 border-t border-slate-100 text-xs text-slate-400 italic';
+          dKamar.innerText = 'Siap huni';
+        } else {
+          bStatus.className = 'bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold';
+          bStatus.innerText = 'Perbaikan';
+          dKamar.className = 'pt-2 border-t border-slate-100 text-xs text-slate-400 italic';
+          dKamar.innerText = 'Sedang diperbaiki';
+        }
       });
+
+      updateStats();
+    }
+
+    function saveLocal() {
+      localStorage.setItem('kost_kamar', JSON.stringify(kamarData));
+      localStorage.setItem('kost_keuangan', JSON.stringify(keuanganData));
+      updateUI();
     }
 
     function openModal(id) {
@@ -402,7 +505,6 @@
         };
 
         saveLocal();
-        renderKamar();
         closeModal();
       }
     }
@@ -541,10 +643,9 @@
       }
     }
 
-    // Eksekusi Langsung
-    renderKamar();
+    // Jalankan update tampilan saat halaman selesai dimuat
+    updateUI();
     renderKeuangan();
-    updateStats();
     if (apiUrl && document.getElementById('apiUrlInput')) {
       document.getElementById('apiUrlInput').value = apiUrl;
     }
