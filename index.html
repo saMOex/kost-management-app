@@ -282,12 +282,13 @@
     } catch(e) {}
 
     let keuanganData = JSON.parse(localStorage.getItem('kost_keuangan')) || [];
-    let apiUrl = localStorage.getItem('kost_api_url'] || '';
+    let apiUrl = localStorage.getItem('kost_api_url') || '';
 
     function renderBulanCheckboxes(selectedList = []) {
       const container = document.getElementById('checkboxBulanContainer');
       const currentMonth = getCurrentMonthString();
-      document.getElementById('labelBulanBerjalan').innerText = `🕒 Berjalan: ${currentMonth}`;
+      const lbl = document.getElementById('labelBulanBerjalan');
+      if (lbl) lbl.innerText = `🕒 Berjalan: ${currentMonth}`;
       
       container.innerHTML = '';
       daftarBulan2026.forEach(bulan => {
@@ -313,7 +314,7 @@
 
         if (!bStatus) return;
 
-        pHarga.innerText = `Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln`;
+        pHarga.innerText = `Rp ${parseInt(kamar.harga || 800000).toLocaleString('id-ID')}/bln`;
 
         if (kamar.status === 'Terisi') {
           if (kamar.statusBayar === 'Lunas') {
@@ -328,7 +329,6 @@
               <p class="text-[11px] text-slate-500">📅 Tempo: ${kamar.jatuhTempo || '-'}</p>
             `;
           } else {
-            // Jika status Belum Bayar tapi list kosong, otomatis masukkan bulan berjalan
             let listBulan = kamar.bulanNunggakList || [];
             if (listBulan.length === 0) {
               listBulan = [currentMonth];
@@ -338,7 +338,7 @@
             bStatus.className = 'bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold';
             bStatus.innerText = `Nunggak ${jmlBulan} Bln`;
             
-            const totalTunggakanRp = kamar.harga * jmlBulan;
+            const totalTunggakanRp = (kamar.harga || 800000) * jmlBulan;
             dKamar.className = 'pt-2 border-t border-rose-100 space-y-1 text-xs bg-rose-50/50 p-1 rounded';
             dKamar.innerHTML = `
               <div class="flex justify-between items-center">
@@ -378,14 +378,13 @@
       document.getElementById('modalTitle').innerText = `Kelola ${kamar.nomor}`;
       document.getElementById('editStatus').value = kamar.status;
       document.getElementById('editStatusBayar').value = kamar.statusBayar || 'Lunas';
-      document.getElementById('editHarga').value = kamar.harga;
-      document.getElementById('editPenghuni').value = kamar.penghuni;
-      document.getElementById('editNoHp').value = kamar.noHp;
-      document.getElementById('editTglMasuk').value = kamar.tglMasuk;
-      document.getElementById('editJatuhTempo').value = kamar.jatuhTempo;
-      document.getElementById('editCatatan').value = kamar.catatan;
+      document.getElementById('editHarga').value = kamar.harga || 800000;
+      document.getElementById('editPenghuni').value = kamar.penghuni || '';
+      document.getElementById('editNoHp').value = kamar.noHp || '';
+      document.getElementById('editTglMasuk').value = kamar.tglMasuk || '';
+      document.getElementById('editJatuhTempo').value = kamar.jatuhTempo || '';
+      document.getElementById('editCatatan').value = kamar.catatan || '';
 
-      // Jika Belum Bayar dan list kosong, otomatis centang bulan berjalan
       let listBulan = kamar.bulanNunggakList || [];
       if (kamar.statusBayar === 'Belum Bayar' && listBulan.length === 0) {
         listBulan = [getCurrentMonthString()];
@@ -420,7 +419,6 @@
       const wrapperNunggak = document.getElementById('wrapperBulanNunggak');
       if (statusBayar === 'Belum Bayar') {
         wrapperNunggak.classList.remove('hidden');
-        // Jika belum ada yang dicentang saat dipilih Belum Bayar, otomatis centang bulan berjalan
         const checked = document.querySelectorAll('input[name="bulanNunggak"]:checked');
         if (checked.length === 0) {
           const checkboxes = document.querySelectorAll('input[name="bulanNunggak"]');
@@ -442,12 +440,11 @@
       if (index !== -1) {
         const oldStatusBayar = kamarData[index].statusBayar;
         const newStatusBayar = document.getElementById('editStatusBayar').value;
-        const harga = parseInt(document.getElementById('editHarga').value) || 0;
+        const harga = parseInt(document.getElementById('editHarga').value) || 800000;
         
         const checkedBoxes = document.querySelectorAll('input[name="bulanNunggak"]:checked');
         let bulanNunggakList = Array.from(checkedBoxes).map(cb => cb.value);
         
-        // Fallback jika belum bayar tapi tidak centang apa pun
         if (newStatusBayar === 'Belum Bayar' && bulanNunggakList.length === 0) {
           bulanNunggakList = [getCurrentMonthString()];
         }
@@ -488,7 +485,7 @@
     function kirimTAGIHANWA() {
       const nama = document.getElementById('editPenghuni').value;
       let hp = document.getElementById('editNoHp').value;
-      const harga = parseInt(document.getElementById('editHarga').value) || 0;
+      const harga = parseInt(document.getElementById('editHarga').value) || 800000;
       const statusBayar = document.getElementById('editStatusBayar').value;
 
       const checkedBoxes = document.querySelectorAll('input[name="bulanNunggak"]:checked');
@@ -519,7 +516,7 @@
       kamarData.forEach(k => {
         if (k.status === 'Terisi' && k.statusBayar === 'Belum Bayar') {
           let listB = (Array.isArray(k.bulanNunggakList) && k.bulanNunggakList.length > 0) ? k.bulanNunggakList : [currentMonth];
-          totalNominalTunggakan += (k.harga * listB.length);
+          totalNominalTunggakan += ((k.harga || 800000) * listB.length);
         }
       });
 
@@ -638,7 +635,7 @@
     updateUI();
     renderKeuangan();
     if (apiUrl && document.getElementById('apiUrlInput')) {
-      document.getElementById('apiUrlInput', apiUrl);
+      document.getElementById('apiUrlInput').value = apiUrl;
     }
   </script>
 </body>
