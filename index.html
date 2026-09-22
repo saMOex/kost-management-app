@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Kost 10 Kamar</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen pb-12">
+
+  <!-- Header & Navbar -->
+  <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div class="flex items-center gap-2">
+        <i data-lucide="home" class="w-7 h-7"></i>
+        <h1 class="text-xl font-bold tracking-wide">Kost Sejahtera (10 Kamar)</h1>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button id="btnSync" onclick="syncDataWithSheets()" class="flex-1 sm:flex-none bg-indigo-500 hover:bg-indigo-700 text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-center gap-1 transition">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Google Sheets
+        </button>
+        <button onclick="toggleSettingsModal()" class="bg-indigo-700 hover:bg-indigo-800 p-2 rounded-lg transition" title="Pengaturan API">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container Utama -->
+  <main class="max-w-6xl mx-auto px-4 mt-6">
+
+    <!-- Status Statistik/Ringkasan -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="check-circle" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">Kamar Terisi</p>
+          <p id="statTerisi" class="text-xl font-bold text-slate-800">0 / 10</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-3 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="door-open" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">Kamar Kosong</p>
+          <p id="statKosong" class="text-xl font-bold text-slate-800">10</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="wallet" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">Pemasukan Bulan Ini</p>
+          <p id="statPemasukan" class="text-sm md:text-base font-bold text-slate-800">Rp 0</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-3 bg-rose-100 text-rose-600 rounded-lg"><i data-lucide="trending-down" class="w-6 h-6"></i></div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">Pengeluaran Bulan Ini</p>
+          <p id="statPengeluaran" class="text-sm md:text-base font-bold text-slate-800">Rp 0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Navigasi -->
+    <div class="flex border-b border-slate-300 mb-6 gap-2">
+      <button id="tabKamarBtn" onclick="switchTab('kamar')" class="px-4 py-2 border-b-2 border-indigo-600 font-bold text-indigo-600 text-sm flex items-center gap-2">
+        <i data-lucide="layout-grid" class="w-4 h-4"></i> Status Kamar
+      </button>
+      <button id="tabKeuanganBtn" onclick="switchTab('keuangan')" class="px-4 py-2 text-slate-500 font-medium text-sm flex items-center gap-2 hover:text-indigo-600">
+        <i data-lucide="receipt" class="w-4 h-4"></i> Catatan Keuangan
+      </button>
+    </div>
+
+    <!-- SECTION 1: GRID 10 KAMAR -->
+    <section id="sectionKamar">
+      <div id="gridKamar" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <!-- Render 10 Kamar via JS -->
+      </div>
+    </section>
+
+    <!-- SECTION 2: CATATAN KEUANGAN -->
+    <section id="sectionKeuangan" class="hidden">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6">
+        <h3 class="text-base font-bold mb-4 flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-indigo-600"></i> Tambah Transaksi Keuangan</h3>
+        <form id="formKeuangan" onsubmit="tambahKeuangan(event)" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div>
+            <label class="text-xs text-slate-500 mb-1 block">Jenis Transaksi</label>
+            <select id="trxJenis" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+              <option value="Pemasukan">Pemasukan (Sewa/Lainnya)</option>
+              <option value="Pengeluaran">Pengeluaran (Operasional)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 mb-1 block">Jumlah (Rp)</label>
+            <input type="number" id="trxJumlah" required class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="150000">
+          </div>
+          <div>
+            <label class="text-xs text-slate-500 mb-1 block">Keterangan</label>
+            <input type="text" id="trxKet" required class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="Bayar Listrik / Kebersihan">
+          </div>
+          <div class="flex items-end">
+            <button type="submit" class="w-full bg-indigo-600 text-white font-medium p-2 rounded-lg text-sm hover:bg-indigo-700 transition">Simpan Transaksi</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tabel Riwayat Keuangan -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 border-b border-slate-200 text-slate-600">
+            <tr>
+              <th class="p-3">Tanggal</th>
+              <th class="p-3">Jenis</th>
+              <th class="p-3">Keterangan</th>
+              <th class="p-3">Jumlah</th>
+              <th class="p-3 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabelKeuangan">
+            <!-- Render Transaksi via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL EDIT KAMAR -->
+  <div id="modalKamar" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <h3 id="modalTitle" class="text-lg font-bold mb-4 border-b pb-2">Detail Kamar</h3>
+      
+      <form id="formKamar" onsubmit="simpanKamar(event)" class="space-y-3">
+        <input type="hidden" id="editKamarId">
+        
+        <div>
+          <label class="text-xs font-medium text-slate-600 block mb-1">Status Kamar</label>
+          <select id="editStatus" onchange="toggleFormPenghuni()" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            <option value="Kosong">Kosong</option>
+            <option value="Terisi">Terisi</option>
+            <option value="Perbaikan">Perbaikan / Rusak</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-xs font-medium text-slate-600 block mb-1">Harga Sewa / Bulan (Rp)</label>
+          <input type="number" id="editHarga" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" required>
+        </div>
+
+        <div id="wrapperPenghuni" class="space-y-3 pt-2 border-t border-slate-100">
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Nama Penghuni</label>
+            <input type="text" id="editPenghuni" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="Nama lengkap">
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Nomor WhatsApp</label>
+            <input type="text" id="editNoHp" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="08123456789">
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Tanggal Masuk</label>
+            <input type="date" id="editTglMasuk" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Tanggal Jatuh Tempo Sewa</label>
+            <input type="date" id="editJatuhTempo" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-medium text-slate-600 block mb-1">Catatan Tambahan</label>
+          <textarea id="editCatatan" rows="2" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="Fasilitas tambahan, DP, dll."></textarea>
+        </div>
+
+        <div class="pt-3 flex flex-col sm:flex-row gap-2">
+          <button type="button" id="btnKirimWA" onclick="kirimTAGIHANWA()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-2.5 px-3 rounded-lg flex items-center justify-center gap-1 transition">
+            <i data-lucide="message-square" class="w-4 h-4"></i> Kirim WA
+          </button>
+          <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg transition">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL SETTINGS GOOGLE SHEETS -->
+  <div id="modalSettings" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative">
+      <button onclick="toggleSettingsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <h3 class="text-lg font-bold mb-2">Pengaturan Google Sheets</h3>
+      <p class="text-xs text-slate-500 mb-4">Masukkan Web App URL dari Google Apps Script untuk sinkronisasi realtime.</p>
+      
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-medium text-slate-600 block mb-1">URL Apps Script</label>
+          <input type="url" id="apiUrlInput" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+        <button onclick="simpanSettings()" class="w-full bg-indigo-600 text-white font-medium py-2 rounded-lg text-sm hover:bg-indigo-700 transition">Simpan Setting</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // Inisialisasi Data Default 10 Kamar
+    let defaultKamar = [];
+    for (let i = 1; i <= 10; i++) {
+      defaultKamar.push({
+        id: i,
+        nomor: `Kamar 0${i}`.slice(-8),
+        status: 'Kosong',
+        harga: 800000,
+        penghuni: '',
+        noHp: '',
+        tglMasuk: '',
+        jatuhTempo: '',
+        catatan: ''
+      });
+    }
+
+    let kamarData = JSON.parse(localStorage.getItem('kost_kamar')) || defaultKamar;
+    let keuanganData = JSON.parse(localStorage.getItem('kost_keuangan')) || [];
+    let apiUrl = localStorage.getItem('kost_api_url') || '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderKamar();
+      renderKeuangan();
+      updateStats();
+      if(apiUrl) document.getElementById('apiUrlInput').value = apiUrl;
+    });
+
+    function saveLocal() {
+      localStorage.setItem('kost_kamar', JSON.stringify(kamarData));
+      localStorage.setItem('kost_keuangan', JSON.stringify(keuanganData));
+      updateStats();
+    }
+
+    function renderKamar() {
+      const container = document.getElementById('gridKamar');
+      container.innerHTML = '';
+
+      kamarData.forEach(kamar => {
+        let statusBadge = '';
+        let borderColor = '';
+
+        if (kamar.status === 'Terisi') {
+          statusBadge = `<span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-bold">Terisi</span>`;
+          borderColor = 'border-emerald-200 bg-emerald-50/20';
+        } else if (kamar.status === 'Kosong') {
+          statusBadge = `<span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-bold">Kosong</span>`;
+          borderColor = 'border-slate-200 bg-white';
+        } else {
+          statusBadge = `<span class="bg-rose-100 text-rose-700 text-xs px-2 py-0.5 rounded-full font-bold">Perbaikan</span>`;
+          borderColor = 'border-rose-200 bg-rose-50/20';
+        }
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-xl border ${borderColor} shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between`;
+        card.onclick = () => openModal(kamar.id);
+
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="font-bold text-slate-800">${kamar.nomor}</h4>
+              ${statusBadge}
+            </div>
+            <p class="text-xs text-slate-500 mb-1">Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln</p>
+            ${kamar.status === 'Terisi' ? `
+              <div class="mt-3 pt-2 border-t border-slate-100">
+                <p class="text-xs font-semibold text-slate-700 flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i> ${kamar.penghuni || '-'}</p>
+                <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5"><i data-lucide="calendar" class="w-3 h-3"></i> Tempo: ${kamar.jatuhTempo || '-'}</p>
+              </div>
+            ` : '<p class="text-xs text-slate-400 mt-4 italic">Siap huni</p>'}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function openModal(id) {
+      const kamar = kamarData.find(k => k.id === id);
+      if (!kamar) return;
+
+      document.getElementById('editKamarId').value = kamar.id;
+      document.getElementById('modalTitle').innerText = `Kelola ${kamar.nomor}`;
+      document.getElementById('editStatus').value = kamar.status;
+      document.getElementById('editHarga').value = kamar.harga;
+      document.getElementById('editPenghuni').value = kamar.penghuni;
+      document.getElementById('editNoHp').value = kamar.noHp;
+      document.getElementById('editTglMasuk').value = kamar.tglMasuk;
+      document.getElementById('editJatuhTempo').value = kamar.jatuhTempo;
+      document.getElementById('editCatatan').value = kamar.catatan;
+
+      toggleFormPenghuni();
+      document.getElementById('modalKamar').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modalKamar').classList.add('hidden');
+    }
+
+    function toggleFormPenghuni() {
+      const status = document.getElementById('editStatus').value;
+      const wrapper = document.getElementById('wrapperPenghuni');
+      const btnWA = document.getElementById('btnKirimWA');
+
+      if (status === 'Terisi') {
+        wrapper.classList.remove('hidden');
+        btnWA.classList.remove('hidden');
+      } else {
+        wrapper.classList.add('hidden');
+        btnWA.classList.add('hidden');
+      }
+    }
+
+    function simpanKamar(e) {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('editKamarId').value);
+      const index = kamarData.findIndex(k => k.id === id);
+
+      if (index !== -1) {
+        kamarData[index] = {
+          ...kamarData[index],
+          status: document.getElementById('editStatus').value,
+          harga: parseInt(document.getElementById('editHarga').value) || 0,
+          penghuni: document.getElementById('editPenghuni').value,
+          noHp: document.getElementById('editNoHp').value,
+          tglMasuk: document.getElementById('editTglMasuk').value,
+          jatuhTempo: document.getElementById('editJatuhTempo').value,
+          catatan: document.getElementById('editCatatan').value
+        };
+
+        saveLocal();
+        renderKamar();
+        closeModal();
+      }
+    }
+
+    function kirimTAGIHANWA() {
+      const nama = document.getElementById('editPenghuni').value;
+      let hp = document.getElementById('editNoHp').value;
+      const tempo = document.getElementById('editJatuhTempo').value;
+      const harga = parseInt(document.getElementById('editHarga').value).toLocaleString('id-ID');
+
+      if (!hp) return alert('Nomor WhatsApp belum diisi!');
+
+      if (hp.startsWith('0')) hp = '62' + hp.slice(1);
+
+      const pesan = `Halo kak ${nama},\nSekadar mengingatkan untuk pembayaran sewa kost sebesar *Rp ${harga}* dengan jatuh tempo tanggal *${tempo}*.\n\nTerima kasih! 🙏`;
+      window.open(`https://wa.me/${hp}?text=${encodeURIComponent(pesan)}`, '_blank');
+    }
+
+    function updateStats() {
+      const terisi = kamarData.filter(k => k.status === 'Terisi').length;
+      document.getElementById('statTerisi').innerText = `${terisi} / 10`;
+      document.getElementById('statKosong').innerText = 10 - terisi;
+
+      const totalMasuk = keuanganData.filter(k => k.jenis === 'Pemasukan').reduce((acc, curr) => acc + curr.jumlah, 0);
+      const totalKeluar = keuanganData.filter(k => k.jenis === 'Pengeluaran').reduce((acc, curr) => acc + curr.jumlah, 0);
+
+      document.getElementById('statPemasukan').innerText = `Rp ${totalMasuk.toLocaleString('id-ID')}`;
+      document.getElementById('statPengeluaran').innerText = `Rp ${totalKeluar.toLocaleString('id-ID')}`;
+    }
+
+    function switchTab(tab) {
+      if (tab === 'kamar') {
+        document.getElementById('sectionKamar').classList.remove('hidden');
+        document.getElementById('sectionKeuangan').classList.add('hidden');
+        document.getElementById('tabKamarBtn').className = 'px-4 py-2 border-b-2 border-indigo-600 font-bold text-indigo-600 text-sm flex items-center gap-2';
+        document.getElementById('tabKeuanganBtn').className = 'px-4 py-2 text-slate-500 font-medium text-sm flex items-center gap-2 hover:text-indigo-600';
+      } else {
+        document.getElementById('sectionKamar').classList.add('hidden');
+        document.getElementById('sectionKeuangan').classList.remove('hidden');
+        document.getElementById('tabKeuanganBtn').className = 'px-4 py-2 border-b-2 border-indigo-600 font-bold text-indigo-600 text-sm flex items-center gap-2';
+        document.getElementById('tabKamarBtn').className = 'px-4 py-2 text-slate-500 font-medium text-sm flex items-center gap-2 hover:text-indigo-600';
+      }
+    }
+
+    function tambahKeuangan(e) {
+      e.preventDefault();
+      const jenis = document.getElementById('trxJenis').value;
+      const jumlah = parseInt(document.getElementById('trxJumlah').value);
+      const ket = document.getElementById('trxKet').value;
+
+      keuanganData.unshift({
+        id: Date.now(),
+        tanggal: new Date().toLocaleDateString('id-ID'),
+        jenis,
+        jumlah,
+        keterangan: ket
+      });
+
+      document.getElementById('trxJumlah').value = '';
+      document.getElementById('trxKet').value = '';
+
+      saveLocal();
+      renderKeuangan();
+    }
+
+    function renderKeuangan() {
+      const tbody = document.getElementById('tabelKeuangan');
+      tbody.innerHTML = '';
+
+      if (keuanganData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">Belum ada catatan keuangan.</td></tr>`;
+        return;
+      }
+
+      keuanganData.forEach(item => {
+        const row = document.createElement('tr');
+        row.className = 'border-b border-slate-100 hover:bg-slate-50';
+        row.innerHTML = `
+          <td class="p-3 text-slate-600">${item.tanggal}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${item.jenis === 'Pemasukan' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">${item.jenis}</span></td>
+          <td class="p-3 font-medium text-slate-800">${item.keterangan}</td>
+          <td class="p-3 font-semibold ${item.jenis === 'Pemasukan' ? 'text-emerald-600' : 'text-rose-600'}">Rp ${item.jumlah.toLocaleString('id-ID')}</td>
+          <td class="p-3 text-center"><button onclick="hapusKeuangan(${item.id})" class="text-rose-500 hover:text-rose-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+        `;
+        tbody.appendChild(row);
+      });
+      lucide.createIcons();
+    }
+
+    function hapusKeuangan(id) {
+      keuanganData = keuanganData.filter(k => k.id !== id);
+      saveLocal();
+      renderKeuangan();
+    }
+
+    function toggleSettingsModal() {
+      document.getElementById('modalSettings').classList.toggle('hidden');
+    }
+
+    function simpanSettings() {
+      const url = document.getElementById('apiUrlInput').value;
+      localStorage.setItem('kost_api_url', url);
+      apiUrl = url;
+      alert('URL Apps Script disimpan!');
+      toggleSettingsModal();
+    }
+
+    async function syncDataWithSheets() {
+      if (!apiUrl) {
+        alert('Harap atur URL Google Apps Script di menu Setting (ikon roda gigi) terlebih dahulu!');
+        toggleSettingsModal();
+        return;
+      }
+
+      const btn = document.getElementById('btnSync');
+      btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Syncing...`;
+
+      try {
+        await fetch(apiUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'updateKamar', payload: kamarData })
+        });
+        alert('Data berhasil disinkronkan ke Google Sheets!');
+      } catch (err) {
+        alert('Gagal sinkronkan data: ' + err.message);
+      } finally {
+        btn.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Google Sheets`;
+        lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+</html>
