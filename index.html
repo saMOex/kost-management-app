@@ -6,7 +6,7 @@
   <title>Manajemen Kost 10 Kamar</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
+  <!-- Lucide Icons CDN Stabil -->
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 min-h-screen pb-12">
@@ -32,7 +32,7 @@
   <!-- Container Utama -->
   <main class="max-w-6xl mx-auto px-4 mt-6">
 
-    <!-- Status Statistik/Ringkasan -->
+    <!-- Status Statistik -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
       <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
         <div class="p-2.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="door-closed" class="w-5 h-5"></i></div>
@@ -224,6 +224,10 @@
 
   <!-- JAVASCRIPT APP LOGIC -->
   <script>
+    function safeIcons() {
+      try { if (window.lucide) lucide.createIcons(); } catch(e){}
+    }
+
     let defaultKamar = [];
     for (let i = 1; i <= 10; i++) {
       defaultKamar.push({
@@ -245,7 +249,7 @@
     let apiUrl = localStorage.getItem('kost_api_url') || '';
 
     document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
+      safeIcons();
       renderKamar();
       renderKeuangan();
       updateStats();
@@ -260,6 +264,7 @@
 
     function renderKamar() {
       const container = document.getElementById('gridKamar');
+      if(!container) return;
       container.innerHTML = '';
       const today = new Date().toISOString().split('T')[0];
 
@@ -271,7 +276,6 @@
         if (kamar.status === 'Terisi') {
           borderColor = 'border-slate-200 bg-white';
 
-          // Hitung Pengingat Jatuh Tempo
           if (kamar.jatuhTempo) {
             const diffDays = Math.ceil((new Date(kamar.jatuhTempo) - new Date(today)) / (1000 * 60 * 60 * 24));
 
@@ -300,7 +304,7 @@
         }
 
         const card = document.createElement('div');
-        card.className = `p-4 rounded-xl border ${borderColor} shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between`;
+        card.className = `p-4 rounded-xl border ${borderColor} shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]`;
         card.onclick = () => openModal(kamar.id);
 
         card.innerHTML = `
@@ -323,7 +327,7 @@
         `;
         container.appendChild(card);
       });
-      lucide.createIcons();
+      safeIcons();
     }
 
     function openModal(id) {
@@ -374,7 +378,6 @@
         const harga = parseInt(document.getElementById('editHarga').value) || 0;
         const kamarNo = kamarData[index].nomor;
 
-        // Otomatis catat ke Keuangan jika status diubah dari Belum Bayar -> Lunas
         if (oldStatusBayar !== 'Lunas' && newStatusBayar === 'Lunas' && document.getElementById('editStatus').value === 'Terisi') {
           keuanganData.unshift({
             id: Date.now(),
@@ -476,6 +479,7 @@
 
     function renderKeuangan() {
       const tbody = document.getElementById('tabelKeuangan');
+      if(!tbody) return;
       tbody.innerHTML = '';
 
       if (keuanganData.length === 0) {
@@ -495,7 +499,7 @@
         `;
         tbody.appendChild(row);
       });
-      lucide.createIcons();
+      safeIcons();
     }
 
     function hapusKeuangan(id) {
@@ -524,7 +528,7 @@
       }
 
       const btn = document.getElementById('btnSync');
-      btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Syncing...`;
+      btn.innerHTML = `Syncing...`;
 
       try {
         await fetch(apiUrl, {
@@ -538,7 +542,7 @@
         alert('Gagal sinkronkan data: ' + err.message);
       } finally {
         btn.innerHTML = `<i data-lucide="refresh-cw" class="w-4 h-4"></i> Sync Google Sheets`;
-        lucide.createIcons();
+        safeIcons();
       }
     }
   </script>
