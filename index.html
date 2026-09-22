@@ -82,7 +82,7 @@
     <!-- SECTION 1: GRID 10 KAMAR -->
     <section id="sectionKamar">
       <div id="gridKamar" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <!-- Kartu Kamar akan muncul di sini via Javascript -->
+        <!-- Kartu Kamar akan muncul di sini -->
       </div>
     </section>
 
@@ -222,6 +222,7 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    // Inisialisasi 10 Kamar Bawaan
     const defaultKamar = Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,
       nomor: `Kamar 0${i + 1}`.slice(-8),
@@ -235,7 +236,15 @@
       catatan: ''
     }));
 
-    let kamarData = JSON.parse(localStorage.getItem('kost_kamar')) || defaultKamar;
+    let localKamar = localStorage.getItem('kost_kamar');
+    let kamarData = (localKamar && localKamar !== 'undefined') ? JSON.parse(localKamar) : defaultKamar;
+    
+    // Validasi agar jumlah kamar selalu minimal 10
+    if (!Array.isArray(kamarData) || kamarData.length < 10) {
+      kamarData = defaultKamar;
+      localStorage.setItem('kost_kamar', JSON.stringify(kamarData));
+    }
+
     let keuanganData = JSON.parse(localStorage.getItem('kost_keuangan')) || [];
     let apiUrl = localStorage.getItem('kost_api_url') || '';
 
@@ -521,13 +530,13 @@
       }
     }
 
-    // Inisialisasi Aplikasi Saat Halaman Selesai Dimuat
-    window.onload = () => {
-      renderKamar();
-      renderKeuangan();
-      updateStats();
-      if(apiUrl) document.getElementById('apiUrlInput').value = apiUrl;
-    };
+    // Eksekusi Langsung tanpa menunggu onload
+    renderKamar();
+    renderKeuangan();
+    updateStats();
+    if (apiUrl && document.getElementById('apiUrlInput')) {
+      document.getElementById('apiUrlInput').value = apiUrl;
+    }
   </script>
 </body>
 </html>
