@@ -33,33 +33,40 @@
   <main class="max-w-6xl mx-auto px-4 mt-6">
 
     <!-- Status Statistik/Ringkasan -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
-        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="check-circle" class="w-6 h-6"></i></div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-2.5 bg-emerald-100 text-emerald-600 rounded-lg"><i data-lucide="door-closed" class="w-5 h-5"></i></div>
         <div>
-          <p class="text-xs text-slate-500 font-medium">Kamar Terisi</p>
-          <p id="statTerisi" class="text-xl font-bold text-slate-800">0 / 10</p>
+          <p class="text-[11px] text-slate-500 font-medium">Terisi</p>
+          <p id="statTerisi" class="text-lg font-bold text-slate-800">0 / 10</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
-        <div class="p-3 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="door-open" class="w-6 h-6"></i></div>
+      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-2.5 bg-blue-100 text-blue-600 rounded-lg"><i data-lucide="door-open" class="w-5 h-5"></i></div>
         <div>
-          <p class="text-xs text-slate-500 font-medium">Kamar Kosong</p>
-          <p id="statKosong" class="text-xl font-bold text-slate-800">10</p>
+          <p class="text-[11px] text-slate-500 font-medium">Kosong</p>
+          <p id="statKosong" class="text-lg font-bold text-slate-800">10</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
-        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="wallet" class="w-6 h-6"></i></div>
+      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-2.5 bg-rose-100 text-rose-600 rounded-lg"><i data-lucide="alert-circle" class="w-5 h-5"></i></div>
         <div>
-          <p class="text-xs text-slate-500 font-medium">Pemasukan Bulan Ini</p>
-          <p id="statPemasukan" class="text-sm md:text-base font-bold text-slate-800">Rp 0</p>
+          <p class="text-[11px] text-slate-500 font-medium">Belum Bayar</p>
+          <p id="statBelumBayar" class="text-lg font-bold text-rose-600">0</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
-        <div class="p-3 bg-rose-100 text-rose-600 rounded-lg"><i data-lucide="trending-down" class="w-6 h-6"></i></div>
+      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+        <div class="p-2.5 bg-indigo-100 text-indigo-600 rounded-lg"><i data-lucide="wallet" class="w-5 h-5"></i></div>
         <div>
-          <p class="text-xs text-slate-500 font-medium">Pengeluaran Bulan Ini</p>
-          <p id="statPengeluaran" class="text-sm md:text-base font-bold text-slate-800">Rp 0</p>
+          <p class="text-[11px] text-slate-500 font-medium">Pemasukan</p>
+          <p id="statPemasukan" class="text-xs md:text-sm font-bold text-slate-800">Rp 0</p>
+        </div>
+      </div>
+      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3 col-span-2 md:col-span-1">
+        <div class="p-2.5 bg-amber-100 text-amber-600 rounded-lg"><i data-lucide="trending-down" class="w-5 h-5"></i></div>
+        <div>
+          <p class="text-[11px] text-slate-500 font-medium">Pengeluaran</p>
+          <p id="statPengeluaran" class="text-xs md:text-sm font-bold text-slate-800">Rp 0</p>
         </div>
       </div>
     </div>
@@ -67,7 +74,7 @@
     <!-- Tab Navigasi -->
     <div class="flex border-b border-slate-300 mb-6 gap-2">
       <button id="tabKamarBtn" onclick="switchTab('kamar')" class="px-4 py-2 border-b-2 border-indigo-600 font-bold text-indigo-600 text-sm flex items-center gap-2">
-        <i data-lucide="layout-grid" class="w-4 h-4"></i> Status Kamar
+        <i data-lucide="layout-grid" class="w-4 h-4"></i> Status Kamar & Bayar
       </button>
       <button id="tabKeuanganBtn" onclick="switchTab('keuangan')" class="px-4 py-2 text-slate-500 font-medium text-sm flex items-center gap-2 hover:text-indigo-600">
         <i data-lucide="receipt" class="w-4 h-4"></i> Catatan Keuangan
@@ -137,35 +144,48 @@
       <form id="formKamar" onsubmit="simpanKamar(event)" class="space-y-3">
         <input type="hidden" id="editKamarId">
         
-        <div>
-          <label class="text-xs font-medium text-slate-600 block mb-1">Status Kamar</label>
-          <select id="editStatus" onchange="toggleFormPenghuni()" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
-            <option value="Kosong">Kosong</option>
-            <option value="Terisi">Terisi</option>
-            <option value="Perbaikan">Perbaikan / Rusak</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="text-xs font-medium text-slate-600 block mb-1">Harga Sewa / Bulan (Rp)</label>
-          <input type="number" id="editHarga" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" required>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Status Kamar</label>
+            <select id="editStatus" onchange="toggleFormPenghuni()" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+              <option value="Kosong">Kosong</option>
+              <option value="Terisi">Terisi</option>
+              <option value="Perbaikan">Perbaikan / Rusak</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Harga Sewa / Bln</label>
+            <input type="number" id="editHarga" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" required>
+          </div>
         </div>
 
         <div id="wrapperPenghuni" class="space-y-3 pt-2 border-t border-slate-100">
           <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Status Pembayaran Bulan Ini</label>
+            <select id="editStatusBayar" class="w-full border rounded-lg p-2 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
+              <option value="Lunas" class="text-emerald-600">Lunas</option>
+              <option value="Belum Bayar" class="text-rose-600">Belum Bayar</option>
+            </select>
+          </div>
+
+          <div>
             <label class="text-xs font-medium text-slate-600 block mb-1">Nama Penghuni</label>
             <input type="text" id="editPenghuni" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="Nama lengkap">
           </div>
-          <div>
-            <label class="text-xs font-medium text-slate-600 block mb-1">Nomor WhatsApp</label>
-            <input type="text" id="editNoHp" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="08123456789">
+          
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-medium text-slate-600 block mb-1">Nomor WhatsApp</label>
+              <input type="text" id="editNoHp" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500" placeholder="08123456789">
+            </div>
+            <div>
+              <label class="text-xs font-medium text-slate-600 block mb-1">Tgl Masuk</label>
+              <input type="date" id="editTglMasuk" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+            </div>
           </div>
+
           <div>
-            <label class="text-xs font-medium text-slate-600 block mb-1">Tanggal Masuk</label>
-            <input type="date" id="editTglMasuk" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
-          </div>
-          <div>
-            <label class="text-xs font-medium text-slate-600 block mb-1">Tanggal Jatuh Tempo Sewa</label>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Jatuh Tempo Pembayaran</label>
             <input type="date" id="editJatuhTempo" class="w-full border rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500">
           </div>
         </div>
@@ -177,7 +197,7 @@
 
         <div class="pt-3 flex flex-col sm:flex-row gap-2">
           <button type="button" id="btnKirimWA" onclick="kirimTAGIHANWA()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-2.5 px-3 rounded-lg flex items-center justify-center gap-1 transition">
-            <i data-lucide="message-square" class="w-4 h-4"></i> Kirim WA
+            <i data-lucide="message-square" class="w-4 h-4"></i> Kirim Tagihan WA
           </button>
           <button type="submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-3 rounded-lg transition">Simpan Perubahan</button>
         </div>
@@ -204,13 +224,13 @@
 
   <!-- JAVASCRIPT APP LOGIC -->
   <script>
-    // Inisialisasi Data Default 10 Kamar
     let defaultKamar = [];
     for (let i = 1; i <= 10; i++) {
       defaultKamar.push({
         id: i,
         nomor: `Kamar 0${i}`.slice(-8),
         status: 'Kosong',
+        statusBayar: 'Belum Bayar',
         harga: 800000,
         penghuni: '',
         noHp: '',
@@ -241,20 +261,42 @@
     function renderKamar() {
       const container = document.getElementById('gridKamar');
       container.innerHTML = '';
+      const today = new Date().toISOString().split('T')[0];
 
       kamarData.forEach(kamar => {
         let statusBadge = '';
-        let borderColor = '';
+        let borderColor = 'border-slate-200 bg-white';
+        let tempoBadge = '';
 
         if (kamar.status === 'Terisi') {
-          statusBadge = `<span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-bold">Terisi</span>`;
-          borderColor = 'border-emerald-200 bg-emerald-50/20';
-        } else if (kamar.status === 'Kosong') {
-          statusBadge = `<span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-bold">Kosong</span>`;
           borderColor = 'border-slate-200 bg-white';
+
+          // Hitung Pengingat Jatuh Tempo
+          if (kamar.jatuhTempo) {
+            const diffDays = Math.ceil((new Date(kamar.jatuhTempo) - new Date(today)) / (1000 * 60 * 60 * 24));
+
+            if (kamar.statusBayar === 'Lunas') {
+              tempoBadge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Lunas</span>`;
+            } else if (diffDays < 0) {
+              tempoBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Nunggak ${Math.abs(diffDays)} Hr</span>`;
+              borderColor = 'border-rose-300 bg-rose-50/30';
+            } else if (diffDays <= 3) {
+              tempoBadge = `<span class="bg-amber-100 text-amber-700 text-[10px] px-2 py-0.5 rounded-full font-bold">H-${diffDays} Tempo</span>`;
+              borderColor = 'border-amber-300 bg-amber-50/30';
+            } else {
+              tempoBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Belum Bayar</span>`;
+            }
+          } else {
+            tempoBadge = kamar.statusBayar === 'Lunas' ? 
+              `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Lunas</span>` : 
+              `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Belum Bayar</span>`;
+          }
+
+          statusBadge = `<span class="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">Terisi</span>`;
+        } else if (kamar.status === 'Kosong') {
+          statusBadge = `<span class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>`;
         } else {
-          statusBadge = `<span class="bg-rose-100 text-rose-700 text-xs px-2 py-0.5 rounded-full font-bold">Perbaikan</span>`;
-          borderColor = 'border-rose-200 bg-rose-50/20';
+          statusBadge = `<span class="bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Perbaikan</span>`;
         }
 
         const card = document.createElement('div');
@@ -263,17 +305,20 @@
 
         card.innerHTML = `
           <div>
-            <div class="flex justify-between items-center mb-2">
+            <div class="flex justify-between items-center mb-1.5">
               <h4 class="font-bold text-slate-800">${kamar.nomor}</h4>
-              ${statusBadge}
+              <div class="flex gap-1 items-center">${statusBadge}</div>
             </div>
-            <p class="text-xs text-slate-500 mb-1">Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln</p>
+            <p class="text-xs text-slate-500 mb-2">Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln</p>
+
             ${kamar.status === 'Terisi' ? `
-              <div class="mt-3 pt-2 border-t border-slate-100">
-                <p class="text-xs font-semibold text-slate-700 flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i> ${kamar.penghuni || '-'}</p>
-                <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5"><i data-lucide="calendar" class="w-3 h-3"></i> Tempo: ${kamar.jatuhTempo || '-'}</p>
+              <div class="pt-2 border-t border-slate-100 space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-semibold text-slate-700 flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i> ${kamar.penghuni \vert{}\vert{} '-'}</span>${tempoBadge}
+                </div>
+                <p class="text-[11px] text-slate-500 flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> Tempo: ${kamar.jatuhTempo || '-'}</p>
               </div>
-            ` : '<p class="text-xs text-slate-400 mt-4 italic">Siap huni</p>'}
+            ` : '<p class="text-xs text-slate-400 italic pt-2 border-t border-slate-100">Siap huni</p>'}
           </div>
         `;
         container.appendChild(card);
@@ -288,6 +333,7 @@
       document.getElementById('editKamarId').value = kamar.id;
       document.getElementById('modalTitle').innerText = `Kelola ${kamar.nomor}`;
       document.getElementById('editStatus').value = kamar.status;
+      document.getElementById('editStatusBayar').value = kamar.statusBayar || 'Belum Bayar';
       document.getElementById('editHarga').value = kamar.harga;
       document.getElementById('editPenghuni').value = kamar.penghuni;
       document.getElementById('editNoHp').value = kamar.noHp;
@@ -323,10 +369,28 @@
       const index = kamarData.findIndex(k => k.id === id);
 
       if (index !== -1) {
+        const oldStatusBayar = kamarData[index].statusBayar;
+        const newStatusBayar = document.getElementById('editStatusBayar').value;
+        const harga = parseInt(document.getElementById('editHarga').value) || 0;
+        const kamarNo = kamarData[index].nomor;
+
+        // Otomatis catat ke Keuangan jika status diubah dari Belum Bayar -> Lunas
+        if (oldStatusBayar !== 'Lunas' && newStatusBayar === 'Lunas' && document.getElementById('editStatus').value === 'Terisi') {
+          keuanganData.unshift({
+            id: Date.now(),
+            tanggal: new Date().toLocaleDateString('id-ID'),
+            jenis: 'Pemasukan',
+            jumlah: harga,
+            keterangan: `Sewa ${kamarNo} (${document.getElementById('editPenghuni').value})`
+          });
+          renderKeuangan();
+        }
+
         kamarData[index] = {
           ...kamarData[index],
           status: document.getElementById('editStatus').value,
-          harga: parseInt(document.getElementById('editHarga').value) || 0,
+          statusBayar: newStatusBayar,
+          harga: harga,
           penghuni: document.getElementById('editPenghuni').value,
           noHp: document.getElementById('editNoHp').value,
           tglMasuk: document.getElementById('editTglMasuk').value,
@@ -345,19 +409,28 @@
       let hp = document.getElementById('editNoHp').value;
       const tempo = document.getElementById('editJatuhTempo').value;
       const harga = parseInt(document.getElementById('editHarga').value).toLocaleString('id-ID');
+      const statusBayar = document.getElementById('editStatusBayar').value;
 
       if (!hp) return alert('Nomor WhatsApp belum diisi!');
-
       if (hp.startsWith('0')) hp = '62' + hp.slice(1);
 
-      const pesan = `Halo kak ${nama},\nSekadar mengingatkan untuk pembayaran sewa kost sebesar *Rp ${harga}* dengan jatuh tempo tanggal *${tempo}*.\n\nTerima kasih! 🙏`;
+      let pesan = "";
+      if (statusBayar === 'Lunas') {
+        pesan = `Halo Kak ${nama},\nTerima kasih! Pembayaran sewa kost bulan ini sebesar *Rp ${harga}* telah kami terima. 🙏`;
+      } else {
+        pesan = `Halo Kak ${nama},\nMengingatkan untuk pembayaran sewa kost bulan ini sebesar *Rp ${harga}* dengan jatuh tempo tanggal *${tempo}*.\n\nMohon untuk melakukan konfirmasi jika sudah ditransfer. Terima kasih! 🙏`;
+      }
+
       window.open(`https://wa.me/${hp}?text=${encodeURIComponent(pesan)}`, '_blank');
     }
 
     function updateStats() {
       const terisi = kamarData.filter(k => k.status === 'Terisi').length;
+      const belumBayar = kamarData.filter(k => k.status === 'Terisi' && k.statusBayar === 'Belum Bayar').length;
+
       document.getElementById('statTerisi').innerText = `${terisi} / 10`;
       document.getElementById('statKosong').innerText = 10 - terisi;
+      document.getElementById('statBelumBayar').innerText = belumBayar;
 
       const totalMasuk = keuanganData.filter(k => k.jenis === 'Pemasukan').reduce((acc, curr) => acc + curr.jumlah, 0);
       const totalKeluar = keuanganData.filter(k => k.jenis === 'Pengeluaran').reduce((acc, curr) => acc + curr.jumlah, 0);
