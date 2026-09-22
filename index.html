@@ -30,26 +30,19 @@
   <main class="max-w-6xl mx-auto px-4 mt-6">
 
     <!-- Status Statistik -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
       <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
         <div class="p-2.5 bg-emerald-100 text-emerald-600 rounded-lg font-bold">🚪</div>
         <div>
-          <p class="text-[11px] text-slate-500 font-medium">Terisi</p>
-          <p id="statTerisi" class="text-lg font-bold text-slate-800">0 / 10</p>
-        </div>
-      </div>
-      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
-        <div class="p-2.5 bg-blue-100 text-blue-600 rounded-lg font-bold">🔑</div>
-        <div>
-          <p class="text-[11px] text-slate-500 font-medium">Kosong</p>
-          <p id="statKosong" class="text-lg font-bold text-slate-800">10</p>
+          <p class="text-[11px] text-slate-500 font-medium">Terisi / Kosong</p>
+          <p id="statTerisi" class="text-sm md:text-base font-bold text-slate-800">0 / 10</p>
         </div>
       </div>
       <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
         <div class="p-2.5 bg-rose-100 text-rose-600 rounded-lg font-bold">⚠️</div>
         <div>
-          <p class="text-[11px] text-slate-500 font-medium">Belum Bayar</p>
-          <p id="statBelumBayar" class="text-lg font-bold text-rose-600">0</p>
+          <p class="text-[11px] text-slate-500 font-medium">Total Tunggakan</p>
+          <p id="statTotalTunggakan" class="text-xs md:text-sm font-bold text-rose-600">Rp 0</p>
         </div>
       </div>
       <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
@@ -59,7 +52,7 @@
           <p id="statPemasukan" class="text-xs md:text-sm font-bold text-slate-800">Rp 0</p>
         </div>
       </div>
-      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3 col-span-2 md:col-span-1">
+      <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
         <div class="p-2.5 bg-amber-100 text-amber-600 rounded-lg font-bold">📉</div>
         <div>
           <p class="text-[11px] text-slate-500 font-medium">Pengeluaran</p>
@@ -71,137 +64,33 @@
     <!-- Tab Navigasi -->
     <div class="flex border-b border-slate-300 mb-6 gap-2">
       <button id="tabKamarBtn" onclick="switchTab('kamar')" class="px-4 py-2 border-b-2 border-indigo-600 font-bold text-indigo-600 text-sm flex items-center gap-2">
-        📊 Status Kamar & Bayar
+        📊 Status Kamar & Tunggakan
       </button>
       <button id="tabKeuanganBtn" onclick="switchTab('keuangan')" class="px-4 py-2 text-slate-500 font-medium text-sm flex items-center gap-2 hover:text-indigo-600">
         📝 Catatan Keuangan
       </button>
     </div>
 
-    <!-- SECTION 1: GRID 10 KAMAR (STATIC LAYOUT - PASTI MUNCUL) -->
+    <!-- SECTION 1: GRID 10 KAMAR -->
     <section id="sectionKamar">
       <div id="gridKamar" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        
-        <!-- Kamar 01 -->
-        <div onclick="openModal(1)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 01</h4>
-              <span id="badgeStatus1" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga1" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar1" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 02 -->
-        <div onclick="openModal(2)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 02</h4>
-              <span id="badgeStatus2" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga2" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar2" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 03 -->
-        <div onclick="openModal(3)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 03</h4>
-              <span id="badgeStatus3" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga3" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar3" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 04 -->
-        <div onclick="openModal(4)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 04</h4>
-              <span id="badgeStatus4" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga4" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar4" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 05 -->
-        <div onclick="openModal(5)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 05</h4>
-              <span id="badgeStatus5" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga5" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar5" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 06 -->
-        <div onclick="openModal(6)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 06</h4>
-              <span id="badgeStatus6" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga6" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar6" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 07 -->
-        <div onclick="openModal(7)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 07</h4>
-              <span id="badgeStatus7" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga7" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar7" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 08 -->
-        <div onclick="openModal(8)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 08</h4>
-              <span id="badgeStatus8" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga8" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar8" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 09 -->
-        <div onclick="openModal(9)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 09</h4>
-              <span id="badgeStatus9" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga9" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar9" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
-        <!-- Kamar 10 -->
-        <div onclick="openModal(10)" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[120px]">
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <h4 class="font-bold text-slate-800">Kamar 10</h4>
-              <span id="badgeStatus10" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
-            </div>
-            <p id="harga10" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
-            <div id="detailKamar10" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
-          </div>
-        </div>
-
+        <script>
+          for (let i = 1; i <= 10; i++) {
+            const num = ("0" + i).slice(-2);
+            document.write(`
+              <div onclick="openModal(${i})" class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between min-h-[130px]">
+                <div>
+                  <div class="flex justify-between items-center mb-1.5">
+                    <h4 class="font-bold text-slate-800">Kamar ${num}</h4>
+                    <span id="badgeStatus${i}" class="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Kosong</span>
+                  </div>
+                  <p id="harga${i}" class="text-xs text-slate-500 mb-2">Rp 800.000/bln</p>
+                  <div id="detailKamar${i}" class="pt-2 border-t border-slate-100 text-xs text-slate-400 italic">Siap huni</div>
+                </div>
+              </div>
+            `);
+          }
+        </script>
       </div>
     </section>
 
@@ -276,12 +165,18 @@
         </div>
 
         <div id="wrapperPenghuni" class="space-y-3 pt-2 border-t border-slate-100">
-          <div>
-            <label class="text-xs font-medium text-slate-600 block mb-1">Status Pembayaran Bulan Ini</label>
-            <select id="editStatusBayar" class="w-full border rounded-lg p-2 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
-              <option value="Lunas" class="text-emerald-600">Lunas</option>
-              <option value="Belum Bayar" class="text-rose-600">Belum Bayar</option>
-            </select>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-medium text-slate-600 block mb-1">Status Pembayaran</label>
+              <select id="editStatusBayar" onchange="toggleBulanNunggak()" class="w-full border rounded-lg p-2 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
+                <option value="Lunas" class="text-emerald-600">Lunas</option>
+                <option value="Belum Bayar" class="text-rose-600">Belum Bayar</option>
+              </select>
+            </div>
+            <div id="wrapperBulanNunggak">
+              <label class="text-xs font-medium text-slate-600 block mb-1">Jumlah Bln Nunggak</label>
+              <input type="number" id="editBulanNunggak" min="1" value="1" class="w-full border rounded-lg p-2 text-sm font-bold text-rose-600 focus:ring-2 focus:ring-indigo-500">
+            </div>
           </div>
 
           <div>
@@ -347,7 +242,8 @@
           id: i,
           nomor: `Kamar 0${i}`.slice(-8),
           status: 'Kosong',
-          statusBayar: 'Belum Bayar',
+          statusBayar: 'Lunas',
+          bulanNunggak: 1,
           harga: 800000,
           penghuni: '',
           noHp: '',
@@ -382,35 +278,31 @@
         pHarga.innerText = `Rp ${parseInt(kamar.harga).toLocaleString('id-ID')}/bln`;
 
         if (kamar.status === 'Terisi') {
-          bStatus.className = 'bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold';
-          bStatus.innerText = 'Terisi';
-
-          let tempoBadge = '';
-          if (kamar.jatuhTempo) {
-            const diffDays = Math.ceil((new Date(kamar.jatuhTempo) - new Date(today)) / (1000 * 60 * 60 * 24));
-            if (kamar.statusBayar === 'Lunas') {
-              tempoBadge = `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Lunas</span>`;
-            } else if (diffDays < 0) {
-              tempoBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Nunggak ${Math.abs(diffDays)} Hr</span>`;
-            } else if (diffDays <= 3) {
-              tempoBadge = `<span class="bg-amber-100 text-amber-700 text-[10px] px-2 py-0.5 rounded-full font-bold">H-${diffDays} Tempo</span>`;
-            } else {
-              tempoBadge = `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Belum Bayar</span>`;
-            }
+          if (kamar.statusBayar === 'Lunas') {
+            bStatus.className = 'bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold';
+            bStatus.innerText = 'Terisi (Lunas)';
+            dKamar.className = 'pt-2 border-t border-slate-100 space-y-1 text-xs';
+            dKamar.innerHTML = `
+              <div class="flex justify-between items-center">
+                <span class="font-semibold text-slate-700">👤 ${kamar.penghuni || '-'}</span>
+                <span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Lunas</span>
+              </div>
+              <p class="text-[11px] text-slate-500">📅 Tempo: ${kamar.jatuhTempo || '-'}</p>
+            `;
           } else {
-            tempoBadge = kamar.statusBayar === 'Lunas' ? 
-              `<span class="bg-emerald-100 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Lunas</span>` : 
-              `<span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Belum Bayar</span>`;
+            bStatus.className = 'bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold';
+            bStatus.innerText = `Nunggak ${kamar.bulanNunggak || 1} Bln`;
+            
+            const totalTunggakanRp = kamar.harga * (kamar.bulanNunggak || 1);
+            dKamar.className = 'pt-2 border-t border-rose-100 space-y-1 text-xs bg-rose-50/50 p-1 rounded';
+            dKamar.innerHTML = `
+              <div class="flex justify-between items-center">
+                <span class="font-semibold text-slate-700">👤 ${kamar.penghuni || '-'}</span>
+                <span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Rp ${totalTunggakanRp.toLocaleString('id-ID')}</span>
+              </div>
+              <p class="text-[11px] text-rose-600 font-medium">⚠️ Menunggak ${kamar.bulanNunggak || 1} Bulan</p>
+            `;
           }
-
-          dKamar.className = 'pt-2 border-t border-slate-100 space-y-1 text-xs';
-          dKamar.innerHTML = `
-            <div class="flex justify-between items-center">
-              <span class="font-semibold text-slate-700">👤 ${kamar.penghuni || '-'}</span>
-              ${tempoBadge}
-            </div>
-            <p class="text-[11px] text-slate-500">📅 Tempo: ${kamar.jatuhTempo || '-'}</p>
-          `;
         } else if (kamar.status === 'Kosong') {
           bStatus.className = 'bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-bold';
           bStatus.innerText = 'Kosong';
@@ -440,7 +332,8 @@
       document.getElementById('editKamarId').value = kamar.id;
       document.getElementById('modalTitle').innerText = `Kelola ${kamar.nomor}`;
       document.getElementById('editStatus').value = kamar.status;
-      document.getElementById('editStatusBayar').value = kamar.statusBayar || 'Belum Bayar';
+      document.getElementById('editStatusBayar').value = kamar.statusBayar || 'Lunas';
+      document.getElementById('editBulanNunggak').value = kamar.bulanNunggak || 1;
       document.getElementById('editHarga').value = kamar.harga;
       document.getElementById('editPenghuni').value = kamar.penghuni;
       document.getElementById('editNoHp').value = kamar.noHp;
@@ -449,6 +342,7 @@
       document.getElementById('editCatatan').value = kamar.catatan;
 
       toggleFormPenghuni();
+      toggleBulanNunggak();
       document.getElementById('modalKamar').classList.remove('hidden');
     }
 
@@ -470,6 +364,16 @@
       }
     }
 
+    function toggleBulanNunggak() {
+      const statusBayar = document.getElementById('editStatusBayar').value;
+      const wrapperNunggak = document.getElementById('wrapperBulanNunggak');
+      if (statusBayar === 'Belum Bayar') {
+        wrapperNunggak.classList.remove('hidden');
+      } else {
+        wrapperNunggak.classList.add('hidden');
+      }
+    }
+
     function simpanKamar(e) {
       e.preventDefault();
       const id = parseInt(document.getElementById('editKamarId').value);
@@ -479,15 +383,18 @@
         const oldStatusBayar = kamarData[index].statusBayar;
         const newStatusBayar = document.getElementById('editStatusBayar').value;
         const harga = parseInt(document.getElementById('editHarga').value) || 0;
+        const bulanNunggak = parseInt(document.getElementById('editBulanNunggak').value) || 1;
         const kamarNo = kamarData[index].nomor;
 
+        // Jika sebelumnya belum bayar/nunggak lalu diubah jadi Lunas, catat otomatis ke pemasukan
         if (oldStatusBayar !== 'Lunas' && newStatusBayar === 'Lunas' && document.getElementById('editStatus').value === 'Terisi') {
+          const totalBayar = harga * (oldStatusBayar === 'Belum Bayar' ? bulanNunggak : 1);
           keuanganData.unshift({
             id: Date.now(),
             tanggal: new Date().toLocaleDateString('id-ID'),
             jenis: 'Pemasukan',
-            jumlah: harga,
-            keterangan: `Sewa ${kamarNo} (${document.getElementById('editPenghuni').value})`
+            jumlah: totalBayar,
+            keterangan: `Pelunasan Sewa ${kamarNo} (${document.getElementById('editPenghuni').value})`
           });
           renderKeuangan();
         }
@@ -496,6 +403,7 @@
           ...kamarData[index],
           status: document.getElementById('editStatus').value,
           statusBayar: newStatusBayar,
+          bulanNunggak: newStatusBayar === 'Belum Bayar' ? bulanNunggak : 0,
           harga: harga,
           penghuni: document.getElementById('editPenghuni').value,
           noHp: document.getElementById('editNoHp').value,
@@ -513,26 +421,34 @@
       const nama = document.getElementById('editPenghuni').value;
       let hp = document.getElementById('editNoHp').value;
       const tempo = document.getElementById('editJatuhTempo').value;
-      const harga = parseInt(document.getElementById('editHarga').value).toLocaleString('id-ID');
+      const harga = parseInt(document.getElementById('editHarga').value) || 0;
+      const bulanNunggak = parseInt(document.getElementById('editBulanNunggak').value) || 1;
+      const totalTunggakan = harga * bulanNunggak;
       const statusBayar = document.getElementById('editStatusBayar').value;
 
       if (!hp) return alert('Nomor WhatsApp belum diisi!');
       if (hp.startsWith('0')) hp = '62' + hp.slice(1);
 
       let pesan = statusBayar === 'Lunas' ? 
-        `Halo Kak ${nama},\nTerima kasih! Pembayaran sewa kost bulan ini sebesar *Rp ${harga}* telah kami terima. 🙏` :
-        `Halo Kak ${nama},\nMengingatkan untuk pembayaran sewa kost bulan ini sebesar *Rp ${harga}* dengan jatuh tempo tanggal *${tempo}*.\n\nMohon konfirmasi jika sudah ditransfer. Terima kasih! 🙏`;
+        `Halo Kak ${nama},\nTerima kasih! Pembayaran sewa kost bulan ini sebesar *Rp ${harga.toLocaleString('id-ID')}* telah kami terima. 🙏` :
+        `Halo Kak ${nama},\nMengingatkan tagihan sewa kost yang belum dibayar selama *${bulanNunggak} bulan* (Terhitung sejak Januari 2026 / periode berjalan) dengan total sebesar *Rp ${totalTunggakan.toLocaleString('id-ID')}* (Jatuh tempo: *${tempo}*).\n\nMohon konfirmasi jika sudah melakukan transfer ya. Terima kasih! 🙏`;
 
       window.open(`https://wa.me/${hp}?text=${encodeURIComponent(pesan)}`, '_blank');
     }
 
     function updateStats() {
       const terisi = kamarData.filter(k => k.status === 'Terisi').length;
-      const belumBayar = kamarData.filter(k => k.status === 'Terisi' && k.statusBayar === 'Belum Bayar').length;
+      
+      // Hitung total nominal rupiah tunggakan dari semua kamar yang belum bayar
+      let totalNominalTunggakan = 0;
+      kamarData.forEach(k => {
+        if (k.status === 'Terisi' && k.statusBayar === 'Belum Bayar') {
+          totalNominalTunggakan += (k.harga * (k.bulanNunggak || 1));
+        }
+      });
 
-      document.getElementById('statTerisi').innerText = `${terisi} / 10`;
-      document.getElementById('statKosong').innerText = 10 - terisi;
-      document.getElementById('statBelumBayar').innerText = belumBayar;
+      document.getElementById('statTerisi').innerText = `${terisi} / 10 Kamar`;
+      document.getElementById('statTotalTunggakan').innerText = `Rp ${totalNominalTunggakan.toLocaleString('id-ID')}`;
 
       const totalMasuk = keuanganData.filter(k => k.jenis === 'Pemasukan').reduce((acc, curr) => acc + curr.jumlah, 0);
       const totalKeluar = keuanganData.filter(k => k.jenis === 'Pengeluaran').reduce((acc, curr) => acc + curr.jumlah, 0);
@@ -643,7 +559,6 @@
       }
     }
 
-    // Jalankan update tampilan saat halaman selesai dimuat
     updateUI();
     renderKeuangan();
     if (apiUrl && document.getElementById('apiUrlInput')) {
