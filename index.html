@@ -142,7 +142,7 @@
 
   <!-- MODAL EDIT KAMAR -->
   <div id="modalKamar" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl relative max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold">✕</button>
       <h3 id="modalTitle" class="text-lg font-bold mb-4 border-b pb-2">Detail Kamar</h3>
       
@@ -165,17 +165,19 @@
         </div>
 
         <div id="wrapperPenghuni" class="space-y-3 pt-2 border-t border-slate-100">
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="text-xs font-medium text-slate-600 block mb-1">Status Pembayaran</label>
-              <select id="editStatusBayar" onchange="toggleBulanNunggak()" class="w-full border rounded-lg p-2 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
-                <option value="Lunas" class="text-emerald-600">Lunas</option>
-                <option value="Belum Bayar" class="text-rose-600">Belum Bayar</option>
-              </select>
-            </div>
-            <div id="wrapperBulanNunggak">
-              <label class="text-xs font-medium text-slate-600 block mb-1">Jumlah Bln Nunggak</label>
-              <input type="number" id="editBulanNunggak" min="1" value="1" class="w-full border rounded-lg p-2 text-sm font-bold text-rose-600 focus:ring-2 focus:ring-indigo-500">
+          <div>
+            <label class="text-xs font-medium text-slate-600 block mb-1">Status Pembayaran</label>
+            <select id="editStatusBayar" onchange="toggleBulanNunggak()" class="w-full border rounded-lg p-2 text-sm font-bold focus:ring-2 focus:ring-indigo-500">
+              <option value="Lunas" class="text-emerald-600">Lunas</option>
+              <option value="Belum Bayar" class="text-rose-600">Belum Bayar</option>
+            </select>
+          </div>
+
+          <!-- Pilihan Bulan Menunggak (Checkbox 2026) -->
+          <div id="wrapperBulanNunggak" class="space-y-1.5 pt-1">
+            <label class="text-xs font-medium text-slate-600 block">Pilih Bulan Belum Dibayar (Tahun 2026):</label>
+            <div id="checkboxBulanContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-lg border text-xs">
+              <!-- Diisi via JavaScript -->
             </div>
           </div>
 
@@ -235,6 +237,12 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    const daftarBulan2026 = [
+      'Januari 2026', 'Februari 2026', 'Maret 2026', 'April 2026', 
+      'Mei 2026', 'Juni 2026', 'Juli 2026', 'Agustus 2026', 
+      'September 2026', 'Oktober 2026', 'November 2026', 'Desember 2026'
+    ];
+
     function generate10Kamar() {
       let list = [];
       for (let i = 1; i <= 10; i++) {
@@ -243,7 +251,7 @@
           nomor: `Kamar 0${i}`.slice(-8),
           status: 'Kosong',
           statusBayar: 'Lunas',
-          bulanNunggak: 1,
+          bulanNunggakList: [],
           harga: 800000,
           penghuni: '',
           noHp: '',
@@ -264,9 +272,21 @@
     let keuanganData = JSON.parse(localStorage.getItem('kost_keuangan')) || [];
     let apiUrl = localStorage.getItem('kost_api_url') || '';
 
-    function updateUI() {
-      const today = new Date().toISOString().split('T')[0];
+    function renderBulanCheckboxes(selectedList = []) {
+      const container = document.getElementById('checkboxBulanContainer');
+      container.innerHTML = '';
+      daftarBulan2026.forEach(bulan => {
+        const isChecked = selectedList.includes(bulan) ? 'checked' : '';
+        container.innerHTML += `
+          <label class="flex items-center gap-1.5 cursor-pointer hover:bg-slate-100 p-1 rounded">
+            <input type="checkbox" name="bulanNunggak" value="${bulan}" ${isChecked} class="rounded text-indigo-600 focus:ring-indigo-500">
+            <span>${bulan}</span>
+          </label>
+        `;
+      });
+    }
 
+    function updateUI() {
       kamarData.forEach((kamar, i) => {
         const num = i + 1;
         const bStatus = document.getElementById(`badgeStatus${num}`);
@@ -290,17 +310,18 @@
               <p class="text-[11px] text-slate-500">📅 Tempo: ${kamar.jatuhTempo || '-'}</p>
             `;
           } else {
+            const jmlBulan = kamar.bulanNunggakList ? kamar.bulanNunggakList.length : 0;
             bStatus.className = 'bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold';
-            bStatus.innerText = `Nunggak ${kamar.bulanNunggak || 1} Bln`;
+            bStatus.innerText = `Nunggak ${jmlBulan} Bln`;
             
-            const totalTunggakanRp = kamar.harga * (kamar.bulanNunggak || 1);
+            const totalTunggakanRp = kamar.harga * jmlBulan;
             dKamar.className = 'pt-2 border-t border-rose-100 space-y-1 text-xs bg-rose-50/50 p-1 rounded';
             dKamar.innerHTML = `
               <div class="flex justify-between items-center">
                 <span class="font-semibold text-slate-700">👤 ${kamar.penghuni || '-'}</span>
                 <span class="bg-rose-100 text-rose-700 text-[10px] px-2 py-0.5 rounded-full font-bold">Rp ${totalTunggakanRp.toLocaleString('id-ID')}</span>
               </div>
-              <p class="text-[11px] text-rose-600 font-medium">⚠️ Menunggak ${kamar.bulanNunggak || 1} Bulan</p>
+              <p class="text-[11px] text-rose-600 font-medium">⚠️ ${jmlBulan} Bulan (${kamar.bulanNunggakList ? kamar.bulanNunggakList.join(', ') : '-'})</p>
             `;
           }
         } else if (kamar.status === 'Kosong') {
@@ -333,7 +354,6 @@
       document.getElementById('modalTitle').innerText = `Kelola ${kamar.nomor}`;
       document.getElementById('editStatus').value = kamar.status;
       document.getElementById('editStatusBayar').value = kamar.statusBayar || 'Lunas';
-      document.getElementById('editBulanNunggak').value = kamar.bulanNunggak || 1;
       document.getElementById('editHarga').value = kamar.harga;
       document.getElementById('editPenghuni').value = kamar.penghuni;
       document.getElementById('editNoHp').value = kamar.noHp;
@@ -341,6 +361,7 @@
       document.getElementById('editJatuhTempo').value = kamar.jatuhTempo;
       document.getElementById('editCatatan').value = kamar.catatan;
 
+      renderBulanCheckboxes(kamar.bulanNunggakList || []);
       toggleFormPenghuni();
       toggleBulanNunggak();
       document.getElementById('modalKamar').classList.remove('hidden');
@@ -383,12 +404,15 @@
         const oldStatusBayar = kamarData[index].statusBayar;
         const newStatusBayar = document.getElementById('editStatusBayar').value;
         const harga = parseInt(document.getElementById('editHarga').value) || 0;
-        const bulanNunggak = parseInt(document.getElementById('editBulanNunggak').value) || 1;
+        
+        // Ambil bulan yang dicentang
+        const checkedBoxes = document.querySelectorAll('input[name="bulanNunggak"]:checked');
+        const bulanNunggakList = Array.from(checkedBoxes).map(cb => cb.value);
         const kamarNo = kamarData[index].nomor;
 
-        // Jika sebelumnya belum bayar/nunggak lalu diubah jadi Lunas, catat otomatis ke pemasukan
         if (oldStatusBayar !== 'Lunas' && newStatusBayar === 'Lunas' && document.getElementById('editStatus').value === 'Terisi') {
-          const totalBayar = harga * (oldStatusBayar === 'Belum Bayar' ? bulanNunggak : 1);
+          const oldBulanList = kamarData[index].bulanNunggakList || [];
+          const totalBayar = harga * (oldBulanList.length > 0 ? oldBulanList.length : 1);
           keuanganData.unshift({
             id: Date.now(),
             tanggal: new Date().toLocaleDateString('id-ID'),
@@ -403,7 +427,7 @@
           ...kamarData[index],
           status: document.getElementById('editStatus').value,
           statusBayar: newStatusBayar,
-          bulanNunggak: newStatusBayar === 'Belum Bayar' ? bulanNunggak : 0,
+          bulanNunggakList: newStatusBayar === 'Belum Bayar' ? bulanNunggakList : [],
           harga: harga,
           penghuni: document.getElementById('editPenghuni').value,
           noHp: document.getElementById('editNoHp').value,
@@ -420,18 +444,23 @@
     function kirimTAGIHANWA() {
       const nama = document.getElementById('editPenghuni').value;
       let hp = document.getElementById('editNoHp').value;
-      const tempo = document.getElementById('editJatuhTempo').value;
       const harga = parseInt(document.getElementById('editHarga').value) || 0;
-      const bulanNunggak = parseInt(document.getElementById('editBulanNunggak').value) || 1;
-      const totalTunggakan = harga * bulanNunggak;
       const statusBayar = document.getElementById('editStatusBayar').value;
+
+      const checkedBoxes = document.querySelectorAll('input[name="bulanNunggak"]:checked');
+      const bulanNunggakList = Array.from(checkedBoxes).map(cb => cb.value);
+      const totalTunggakan = harga * bulanNunggakList.length;
 
       if (!hp) return alert('Nomor WhatsApp belum diisi!');
       if (hp.startsWith('0')) hp = '62' + hp.slice(1);
 
-      let pesan = statusBayar === 'Lunas' ? 
-        `Halo Kak ${nama},\nTerima kasih! Pembayaran sewa kost bulan ini sebesar *Rp ${harga.toLocaleString('id-ID')}* telah kami terima. 🙏` :
-        `Halo Kak ${nama},\nMengingatkan tagihan sewa kost yang belum dibayar selama *${bulanNunggak} bulan* (Terhitung sejak Januari 2026 / periode berjalan) dengan total sebesar *Rp ${totalTunggakan.toLocaleString('id-ID')}* (Jatuh tempo: *${tempo}*).\n\nMohon konfirmasi jika sudah melakukan transfer ya. Terima kasih! 🙏`;
+      let pesan = "";
+      if (statusBayar === 'Lunas') {
+        pesan = `Halo Kak ${nama},\nTerima kasih! Pembayaran sewa kost bulan ini sebesar *Rp ${harga.toLocaleString('id-ID')}* telah kami terima. 🙏`;
+      } else {
+        const daftarBulanStr = bulanNunggakList.length > 0 ? bulanNunggakList.join(', ') : '-';
+        pesan = `Halo Kak ${nama},\nMengingatkan tagihan sewa kost yang belum dibayar untuk bulan: *${daftarBulanStr}*.\n\nTotal tagihan: *Rp ${totalTunggakan.toLocaleString('id-ID')}*.\n\nMohon konfirmasi jika sudah ditransfer ya. Terima kasih! 🙏`;
+      }
 
       window.open(`https://wa.me/${hp}?text=${encodeURIComponent(pesan)}`, '_blank');
     }
@@ -439,11 +468,10 @@
     function updateStats() {
       const terisi = kamarData.filter(k => k.status === 'Terisi').length;
       
-      // Hitung total nominal rupiah tunggakan dari semua kamar yang belum bayar
       let totalNominalTunggakan = 0;
       kamarData.forEach(k => {
-        if (k.status === 'Terisi' && k.statusBayar === 'Belum Bayar') {
-          totalNominalTunggakan += (k.harga * (k.bulanNunggak || 1));
+        if (k.status === 'Terisi' && k.statusBayar === 'Belum Bayar' && Array.isArray(k.bulanNunggakList)) {
+          totalNominalTunggakan += (k.harga * k.bulanNunggakList.length);
         }
       });
 
